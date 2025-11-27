@@ -1,49 +1,67 @@
-def reloj_arena(m: int, s: str) -> str:
+import sys
+# La función debe recibir la lista de líneas de entrada para manejar todas las validaciones.
+# Se espera que 'entrada' sea una lista de cadenas, donde entrada[0] es la altura (m) 
+# y entrada[1] es el carácter (s), si existen.
+def reloj_arena(entrada: list[str]) -> str:
     """
-    Genera un reloj de arena centrado en ASCII.
+    Lee una lista de líneas de entrada (se esperan 2: altura y caracter) y dibuja 
+    un reloj de arena centrado en ASCII o imprime un error.
 
-    :param m: Altura de la parte superior del reloj (número entero positivo).
-    :param s: Carácter de relleno (se asume que es un solo carácter válido).
+    :param entrada: Una lista de cadenas, donde entrada[0] es la altura (m) 
+                    y entrada[1] es el carácter (s).
     :return: Una cadena (string) que contiene la figura o el mensaje de error.
     """
     
-    # TODO: validar altura mayor que 0 e imprimir "Error: La altura debe ser un entero positivo" y salir
+    # --- 1. VALIDACIÓN DE CANTIDAD DE ENTRADAS ---
+    # Debe haber al menos dos elementos en la lista.
+    if len(entrada) < 2:
+        return "Error: Se esperan 2 lineas de entrada (altura, caracter)"
+
+    # Obtener las entradas
+    altura_str = entrada[0]
+    caracter_line = entrada[1]
+    
+    # --- 2. VALIDACIÓN DEL CARÁCTER (s) ---
+    # La segunda línea no puede ser vacía (strip() ya se hizo si se lee sys.stdin)
+    if not caracter_line:
+        return "Error: El caracter no puede ser vacío"
+
+    # Tomar solo el primer carácter
+    s = caracter_line[0]
+
+    # --- 3. VALIDACIÓN DE LA ALTURA (m) ---
+    
+    # a) Debe ser un número entero
+    try:
+        m = int(altura_str)
+    except ValueError:
+        return "Error: La altura debe ser un numero entero"
+
+    # b) Debe ser un entero positivo (> 0)
     if m <= 0:
         return "Error: La altura debe ser un entero positivo"
 
-    # TODO: implementar la lógica para generar el reloj de arena en ASCII
+    # --- 4. GENERACIÓN DEL RELOJ DE ARENA ---
+
     resultado = []
     
-    # El ancho máximo de la figura es W = 2 * m - 1
-    # La cantidad de espacios y caracteres se basa en el índice de la línea (i)
+    # m es un entero positivo válido. s es un carácter válido.
 
-    # --- 1. PARTE SUPERIOR (Triángulo Decreciente) ---
-    # Desde la línea i=0 (más ancha) hasta i=m-1 (la punta).
+    # --- A. PARTE SUPERIOR (Triángulo Decreciente) ---
+    # Bucle desde i=0 hasta i=m-1
     for i in range(m):
-        # Espacios: i
         num_espacios = i
-        
-        # Caracteres: 2 * (m - i) - 1
         num_caracteres = 2 * (m - i) - 1
         
-        # Construir la línea: [Espacios][Caracteres]
         linea = " " * num_espacios + s * num_caracteres
         resultado.append(linea)
 
-    # --- 2. PARTE INFERIOR (Triángulo Creciente) ---
-    # Desde la línea i=1 (después de la punta) hasta i=m-1 (la base más ancha).
+    # --- B. PARTE INFERIOR (Triángulo Creciente) ---
+    # Bucle desde i=1 hasta i=m-1
     for i in range(1, m):
-        # Espacios: (m - 1) - i
-        # En la primera línea (i=1), queremos m-2 espacios.
-        # En la última línea (i=m-1), queremos 0 espacios.
         num_espacios = (m - 1) - i
-        
-        # Caracteres: 2 * i + 1
-        # En la primera línea (i=1), queremos 3 caracteres.
-        # En la última línea (i=m-1), queremos 2(m-1)+1 = 2m-1 caracteres.
         num_caracteres = 2 * i + 1
         
-        # Construir la línea: [Espacios][Caracteres]
         linea = " " * num_espacios + s * num_caracteres
         resultado.append(linea)
 
