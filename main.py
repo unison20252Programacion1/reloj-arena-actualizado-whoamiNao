@@ -1,7 +1,7 @@
 # Completa las validaciones y llama a la función
 
 import sys
-from solucion import [NOMBRE_DE_LA_FUNCION]
+from solucion import reloj_arena
 
 def main():
     """
